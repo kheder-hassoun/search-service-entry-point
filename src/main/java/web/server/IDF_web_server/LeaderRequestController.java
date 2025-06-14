@@ -31,15 +31,18 @@ public class LeaderRequestController {
     @GetMapping("/search")
     public ResponseEntity<String> handleSearchRequest(@RequestParam String query) {
         try {
-            // Retrieve the leader's port from the ZooKeeper znode
-            String leaderPort = new String(zooKeeper.getData(LEADER_INFO_PATH, false, null));
+            // Retrieve the leader's port from the ZooKeeper znode4
+            System.out.println("[test] trying get the leader url  ");
+            String leaderUrl = new String(zooKeeper.getData(LEADER_INFO_PATH, false, null));
+            System.out.println("[test] leader url :  "+ leaderUrl);
 
             // Construct the leader's URL dynamically
-            String leaderUrl = String.format("http://localhost:%s/leader/start", leaderPort);
+            String api = leaderUrl+"/leader/start";
+            //String api = String.format("http://localhost:%s/leader/start", leaderPort);
 
             // Forward the search query as a POST request to the leader
             HttpEntity<String> requestEntity = new HttpEntity<>(query);
-            String response = restTemplate.postForObject(leaderUrl, requestEntity, String.class);
+            String response = restTemplate.postForObject(api, requestEntity, String.class);
 
             return ResponseEntity.ok(response);
         } catch (KeeperException | InterruptedException e) {
