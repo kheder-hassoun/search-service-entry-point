@@ -3,18 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeuroSearch v3.0</title>
+  <title>NeuroSearch v4.0</title>
   <style>
     :root {
       --bg-dark: #0a0a12;
       --accent-1: #ff3b8d;
       --accent-2: #00f3ff;
       --neon-purple: #bc13fe;
-      --surface-dark: #1a1a2fcc;
+      --surface-dark: rgba(26, 26, 47, 0.8);
       --text-dark: #e0e0ff;
-      --neon-border: rgba(188, 19, 254, 0.4);
+      --neon-border: rgba(188, 19, 254, 0.2);
       --success-green: #00ff9d;
       --warning-orange: #ff9d00;
+      --glow-intensity: 0.5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
@@ -29,6 +36,10 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(255, 59, 141, 0.03) 0%, transparent 30%);
     }
 
     .cyber-header {
@@ -38,6 +49,7 @@
       display: flex;
       gap: 1.5rem;
       align-items: center;
+      z-index: 10;
     }
 
     .cyber-badge {
@@ -48,13 +60,16 @@
       padding: 0.8rem 1.5rem;
       border-radius: 8px;
       box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
+      font-size: 1.1rem;
+      letter-spacing: 1px;
     }
 
     .search-box {
       position: relative;
       width: 80%;
       max-width: 720px;
-      margin: 4rem 0;
+      margin: 4rem 0 2rem;
+      z-index: 5;
     }
 
     .search-box input {
@@ -62,17 +77,20 @@
       padding: 1.4rem 4rem;
       border: 2px solid transparent;
       border-radius: 12px;
-      background: #1a1a2f;
-      color: inherit;
+      background: rgba(26, 26, 47, 0.3);
+      color: var(--accent-2);
       font-size: 1.2rem;
       transition: all 0.3s ease;
       position: relative;
       z-index: 2;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
     }
 
     .search-box input:focus {
       outline: none;
       animation: border-glow 1.5s infinite alternate;
+      background: rgba(26, 26, 47, 0.5);
     }
 
     .search-icon {
@@ -94,18 +112,20 @@
       color: var(--accent-2);
       opacity: 0;
       transition: opacity 0.3s ease;
+      font-size: 0.9rem;
     }
 
     .search-box:hover .key-guide {
       opacity: 1;
     }
 
+    /* Modern transparent suggestions */
     .suggestions {
       position: absolute;
       width: calc(100% - 5.6rem);
       left: 2.8rem;
       margin-top: 0.5rem;
-      background: #1a1a2f;
+      background: rgba(26, 26, 47, 0.4);
       border-radius: 12px;
       box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
       max-height: 60vh;
@@ -115,12 +135,15 @@
       transition: all 0.3s cubic-bezier(0.17, 0.67, 0.21, 1.01);
       z-index: 4;
       border: 1px solid rgba(0, 243, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-top: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
     }
 
     .suggestions.visible {
       opacity: 1;
       transform: translateY(0);
-      backdrop-filter: blur(5px);
     }
 
     .suggestion {
@@ -131,6 +154,10 @@
       transition: all 0.2s ease;
       margin: 0 0.5rem;
       border-radius: 8px;
+      background: rgba(10, 10, 18, 0.4);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 243, 255, 0.05);
+      margin-top: 0.5rem;
     }
 
     .suggestion:first-child {
@@ -143,6 +170,7 @@
 
     .suggestion:hover {
       background: linear-gradient(90deg, rgba(255,59,141,0.1) 0%, transparent 100%);
+      box-shadow: 0 0 15px rgba(255, 59, 141, 0.1);
     }
 
     .cyber-scan {
@@ -154,6 +182,7 @@
       top: 0;
       opacity: 0;
       transition: all 0.3s ease;
+      filter: drop-shadow(0 0 4px var(--accent-2));
     }
 
     .suggestion:hover .cyber-scan {
@@ -175,18 +204,20 @@
       animation: cascade 1.5s steps(24) forwards;
       overflow: hidden;
       white-space: nowrap;
+      z-index: 5;
     }
 
     /* Search results container */
     .search-results {
       width: 80%;
       max-width: 720px;
-      margin-top: 2rem;
+      margin-top: 1rem;
       max-height: 60vh;
       overflow-y: auto;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.5s ease;
+      z-index: 4;
     }
 
     .search-results.visible {
@@ -201,11 +232,13 @@
       font-size: 1.1rem;
       opacity: 0;
       animation: fade-in 0.5s 0.3s forwards;
+      letter-spacing: 1px;
     }
 
     .response-time span {
       color: var(--accent-1);
       font-weight: bold;
+      text-shadow: 0 0 10px rgba(255, 59, 141, 0.5);
     }
 
     .result-item {
@@ -220,6 +253,7 @@
       transform: translateX(-20px);
       opacity: 0;
       animation: slide-in 0.5s forwards;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
     .result-item.top-result {
@@ -241,6 +275,10 @@
       font-size: 1.1rem;
       margin-bottom: 0.5rem;
       color: var(--accent-2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 85%;
     }
 
     .result-item .similarity {
@@ -258,12 +296,20 @@
       padding: 2rem;
       color: var(--accent-1);
       font-style: italic;
+      background: rgba(26, 26, 47, 0.4);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
     }
     
     .loading-animation {
       display: flex;
       justify-content: center;
       padding: 2rem;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(26, 26, 47, 0.4);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
     }
     
     .loading-dots {
@@ -277,6 +323,7 @@
       border-radius: 50%;
       background-color: var(--accent-2);
       animation: pulse 1.5s infinite;
+      box-shadow: 0 0 10px var(--accent-2);
     }
     
     .dot:nth-child(2) {
@@ -285,6 +332,41 @@
     
     .dot:nth-child(3) {
       animation-delay: 1s;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+      gap: 0.5rem;
+    }
+    
+    .page-btn {
+      background: rgba(26, 26, 47, 0.4);
+      color: var(--accent-2);
+      border: 1px solid var(--neon-border);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+    
+    .page-btn:hover {
+      background: rgba(255, 59, 141, 0.2);
+      box-shadow: 0 0 10px rgba(255, 59, 141, 0.3);
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .show-more {
+      width: 100%;
+      margin-top: 1rem;
+      background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.1));
+      border: 1px solid var(--neon-border);
     }
 
     /* Animations */
@@ -353,11 +435,57 @@
         opacity: 0;
       }
     }
+    
+    /* Gradient glow effect */
+    .glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
+      z-index: 1;
+    }
+    
+    /* Hide scrollbars */
+    .search-results::-webkit-scrollbar, 
+    .suggestions::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+    }
+    
+    /* Floating text effect */
+    .floating-text {
+      position: absolute;
+      font-size: 10rem;
+      font-weight: 900;
+      opacity: 0.03;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+    
+    .floating-text.top {
+      top: 10%;
+      right: 10%;
+      transform: rotate(15deg);
+    }
+    
+    .floating-text.bottom {
+      bottom: 10%;
+      left: 10%;
+      transform: rotate(-15deg);
+    }
   </style>
 </head>
 <body>
+  <div class="glow"></div>
+  <div class="floating-text top">NEURO</div>
+  <div class="floating-text bottom">SEARCH</div>
+  
   <div class="cyber-header">
-    <div class="cyber-badge">NeuroSearch v3.0</div>
+    <div class="cyber-badge">NeuroSearch v4.0</div>
   </div>
 
   <div class="search-box">
@@ -368,6 +496,11 @@
            id="search" 
            placeholder="Start typing to search .."
            autocomplete="off">
+    <div class="key-guide">
+      <span>↑↓ Navigate</span>
+      <span>⏎ Select</span>
+      <span>⎋ Close</span>
+    </div>
     <div id="suggestions" class="suggestions"></div>
   </div>
 
@@ -403,6 +536,9 @@
     let selectedIndex = -1;
     let suggestions = [];
     let debounceTimeout;
+    let currentPage = 1;
+    const pageSize = 4;
+    let allResults = [];
 
     const searchInput = document.getElementById('search');
     const suggestionsEl = document.getElementById('suggestions');
@@ -508,6 +644,7 @@
         </div>
       `;
       resultsContainer.classList.add('visible');
+      currentPage = 1;
       
       const startTime = performance.now();
       
@@ -523,7 +660,18 @@
         const endTime = performance.now();
         const timeTaken = (endTime - startTime).toFixed(2);
         
-        displayResults(data, timeTaken);
+        // Process data
+        allResults = Object.entries(data)
+          .map(([file, value]) => {
+            let processedValue = Math.abs(parseFloat(value));
+            if (processedValue === 0.05115252244738131) {
+              processedValue = 0.0;
+            }
+            return { file, value: processedValue };
+          })
+          .sort((a, b) => b.value - a.value);
+        
+        displayResults(timeTaken);
       } catch (error) {
         resultsContainer.innerHTML = `
           <div class="no-results">
@@ -535,20 +683,9 @@
     }
 
     // Display search results from API
-    function displayResults(data, timeTaken) {
-      // Process data - replace specific value and sort
-      const processedData = Object.entries(data)
-        .map(([file, value]) => {
-          let processedValue = Math.abs(parseFloat(value));
-          if (processedValue === 0.05115252244738131) {
-            processedValue = 0.0;
-          }
-          return { file, value: processedValue };
-        })
-        .sort((a, b) => b.value - a.value);
-      
+    function displayResults(timeTaken) {
       // Check if all values are zero
-      const allZero = processedData.every(item => item.value === 0.0);
+      const allZero = allResults.every(item => item.value === 0.0);
       
       if (allZero) {
         resultsContainer.innerHTML = `
@@ -559,6 +696,11 @@
         return;
       }
       
+      // Get results for current page
+      const startIndex = (currentPage - 1) * pageSize;
+      const endIndex = Math.min(startIndex + pageSize, allResults.length);
+      const pageResults = allResults.slice(0, endIndex);
+      
       // Create response time element
       const responseTimeEl = document.createElement('div');
       responseTimeEl.className = 'response-time';
@@ -568,7 +710,7 @@
       const resultsList = document.createElement('div');
       
       // Add items with animation delay
-      processedData.forEach((item, index) => {
+      pageResults.forEach((item, index) => {
         const resultItem = document.createElement('div');
         resultItem.className = `result-item ${index === 0 ? 'top-result' : ''}`;
         resultItem.innerHTML = `
@@ -580,14 +722,81 @@
         resultsList.appendChild(resultItem);
       });
       
+      // Create pagination controls
+      const pagination = document.createElement('div');
+      pagination.className = 'pagination';
+      
+      if (endIndex < allResults.length) {
+        const showMoreBtn = document.createElement('button');
+        showMoreBtn.className = 'page-btn show-more';
+        showMoreBtn.textContent = 'Show More Results';
+        showMoreBtn.addEventListener('click', () => {
+          currentPage++;
+          displayResults(timeTaken);
+        });
+        pagination.appendChild(showMoreBtn);
+      }
+      
       // Update the container
       resultsContainer.innerHTML = '';
       resultsContainer.appendChild(responseTimeEl);
       resultsContainer.appendChild(resultsList);
+      
+      if (endIndex < allResults.length) {
+        resultsContainer.appendChild(pagination);
+      }
     }
 
     // Expose to global scope for onclick handlers
     window.selectSuggestion = selectSuggestion;
+    
+    // Add floating particles effect
+    function createFloatingParticles() {
+      const container = document.querySelector('.glow');
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+          position: absolute;
+          width: ${Math.random() * 100 + 50}px;
+          height: ${Math.random() * 100 + 50}px;
+          left: ${Math.random() * 100}%;
+          top: ${Math.random() * 100}%;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
+          filter: blur(20px);
+          opacity: ${Math.random() * 0.3 + 0.1};
+          pointer-events: none;
+          z-index: 0;
+          animation: float ${Math.random() * 20 + 10}s infinite linear;
+        `;
+        container.appendChild(particle);
+      }
+    }
+    
+    // Add CSS for floating animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg);
+        }
+        50% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg);
+        }
+        75% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(360deg);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    createFloatingParticles();
   </script>
 </body>
 </html>
