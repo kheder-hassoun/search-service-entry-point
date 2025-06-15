@@ -1,214 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Search Page</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f3e5f5;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroSearch v3.0</title>
+  <style>
+    :root {
+      --bg-dark: #0a0a12;
+      --accent-1: #ff3b8d;
+      --accent-2: #00f3ff;
+      --neon-purple: #bc13fe;
+      --surface-dark: #1a1a2fcc;
+      --text-dark: #e0e0ff;
+      --neon-border: rgba(188, 19, 254, 0.4);
+      --success-green: #00ff9d;
+      --warning-orange: #ff9d00;
+    }
 
-        nav {
-            background: #7b1fa2;
-            padding: 15px;
-            color: white;
-            text-align: center;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
+    body {
+      font-family: 'Space Mono', monospace;
+      background: var(--bg-dark);
+      color: #e0e0ff;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-        footer {
-            background: #4a148c;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+    .cyber-header {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
 
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: calc(100vh - 100px);
-            padding: 20px;
-        }
+    .cyber-badge {
+      background: linear-gradient(45deg, #2a1a3f, #1a2a4f);
+      color: var(--accent-2);
+      border: 1px solid var(--neon-border);
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
+    }
 
-        .search-box {
-            background: rgba(255, 255, 255, 0.91);
-            padding: 30px;
-            margin-top: -200px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 600px;
-            animation: fadeIn 1s ease-in-out;
-        }
+    .search-box {
+      position: relative;
+      width: 80%;
+      max-width: 720px;
+      margin: 4rem 0;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
+    .search-box input {
+      width: 100%;
+      padding: 1.4rem 4rem;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: #1a1a2f;
+      color: inherit;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
 
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #7b1fa2;
-        }
+    .search-box input:focus {
+      outline: none;
+      animation: border-glow 1.5s infinite alternate;
+    }
 
-        input[type="text"] {
-            width: 80%;
-            padding: 15px;
-            margin: 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            outline: none;
-            font-size: 16px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
+    .search-icon {
+      position: absolute;
+      left: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent-1);
+      filter: drop-shadow(0 0 8px var(--accent-1));
+      z-index: 3;
+    }
 
-        button {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 25px;
-            background: #7b1fa2;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-        }
+    .key-guide {
+      position: absolute;
+      top: -2.5rem;
+      right: 0;
+      display: flex;
+      gap: 1rem;
+      color: var(--accent-2);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-        button:hover {
-            background: #6a1b9a;
-            transform: scale(1.05);
-        }
+    .search-box:hover .key-guide {
+      opacity: 1;
+    }
 
-        .response-container {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 800px;
-        }
+    .suggestions {
+      position: absolute;
+      width: calc(100% - 5.6rem);
+      left: 2.8rem;
+      margin-top: 0.5rem;
+      background: #1a1a2f;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
+      max-height: 60vh;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.17, 0.67, 0.21, 1.01);
+      z-index: 4;
+      border: 1px solid rgba(0, 243, 255, 0.1);
+    }
 
-        .response-item {
-            padding: 15px;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 16px;
-            text-align: center;
-            opacity: 0; /* Start hidden */
-            animation: fadeIn 1.5s ease-in-out forwards;
-        }
+    .suggestions.visible {
+      opacity: 1;
+      transform: translateY(0);
+      backdrop-filter: blur(5px);
+    }
 
-        .response-item.blue {
-            background: #4ee10a;
-        }
+    .suggestion {
+      padding: 1.2rem 1.5rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      margin: 0 0.5rem;
+      border-radius: 8px;
+    }
 
-        .response-item.green {
-            background: #bf0b51;
-        }
+    .suggestion:first-child {
+      margin-top: 0.5rem;
+    }
 
-        .response-time {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #555;
-        }
+    .suggestion:last-child {
+      margin-bottom: 0.5rem;
+    }
 
-        .response-time span {
-            color: #7b1fa2;
-            font-weight: bold;
-        }
-    </style>
+    .suggestion:hover {
+      background: linear-gradient(90deg, rgba(255,59,141,0.1) 0%, transparent 100%);
+    }
+
+    .cyber-scan {
+      position: absolute;
+      height: 100%;
+      width: 4px;
+      background: var(--accent-2);
+      left: -10px;
+      top: 0;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .suggestion:hover .cyber-scan {
+      left: 100%;
+      opacity: 1;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .cyber-footer {
+      position: absolute;
+      bottom: 2rem;
+      font-size: 1.1rem;
+      background: linear-gradient(45deg, #d0d0d0, #909090);
+      animation: 
+        cascade 1.5s steps(24) forwards,
+        gray-pulse 3s infinite alternate;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: cascade 1.5s steps(24) forwards;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* Search results container */
+    .search-results {
+      width: 80%;
+      max-width: 720px;
+      margin-top: 2rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    .search-results.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .response-time {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--accent-2);
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fade-in 0.5s 0.3s forwards;
+    }
+
+    .response-time span {
+      color: var(--accent-1);
+      font-weight: bold;
+    }
+
+    .result-item {
+      background: var(--surface-dark);
+      border: 1px solid rgba(0, 243, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+      transform: translateX(-20px);
+      opacity: 0;
+      animation: slide-in 0.5s forwards;
+    }
+
+    .result-item.top-result {
+      background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.1));
+      border: 1px solid var(--neon-purple);
+      box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+    }
+
+    .result-rank {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 0.9rem;
+      color: var(--accent-1);
+    }
+
+    .result-item .file-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent-2);
+    }
+
+    .result-item .similarity {
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .top-result .file-name {
+      color: var(--accent-1);
+      text-shadow: 0 0 10px rgba(255, 59, 141, 0.5);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 2rem;
+      color: var(--accent-1);
+      font-style: italic;
+    }
+    
+    .loading-animation {
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .loading-dots {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--accent-2);
+      animation: pulse 1.5s infinite;
+    }
+    
+    .dot:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+    
+    .dot:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    /* Animations */
+    @keyframes border-glow {
+      0% { box-shadow: 0 0 10px var(--neon-purple); }
+      50% { box-shadow: 0 0 20px var(--neon-purple); }
+      100% { box-shadow: 0 0 10px var(--neon-purple); }
+    }
+
+    @keyframes cascade {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes particle-float {
+      0%, 100% { 
+        transform: translateY(0) scale(1);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: translateY(-40px) scale(1.3);
+        opacity: 0.4;
+      }
+    }
+
+    @keyframes gray-pulse {
+      from { opacity: 0.8; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slide-in {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    /* Persistent scan animation */
+    .persistent-scan .cyber-scan {
+      animation: infinite-scan 2s infinite linear;
+    }
+
+    @keyframes infinite-scan {
+      0% {
+        left: -10px;
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        left: 100%;
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-<nav>Search Application</nav>
+  <div class="cyber-header">
+    <div class="cyber-badge">NeuroSearch v3.0</div>
+  </div>
 
-<div class="main-container">
-    <div class="search-box">
-        <h1>Search Page</h1>
-        <input type="text" id="searchQuery" placeholder="Enter search term...">
-        <button onclick="sendSearchRequest()">🔍 Search</button>
-    </div>
+  <div class="search-box">
+    <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <input type="text" 
+           id="search" 
+           placeholder="Start typing to search .."
+           autocomplete="off">
+    <div id="suggestions" class="suggestions"></div>
+  </div>
 
-    <div class="response-time" id="responseTimeContainer">
-        <!-- Response time will appear here -->
-    </div>
+  <div id="search-results" class="search-results">
+    <!-- Results will be populated here -->
+  </div>
 
-    <div class="response-container" id="responseContainer">
-        <!-- Results will appear here -->
-    </div>
-</div>
+  <div class="cyber-footer">Developed by KHEDER</div>
 
-<footer>© 2025 Search App. All rights reserved.</footer>
-<script>
-    function sendSearchRequest() {
-        const query = document.getElementById("searchQuery").value;
-        const responseContainer = document.getElementById("responseContainer");
-        const responseTimeContainer = document.getElementById("responseTimeContainer");
+  <div class="particles" id="particles"></div>
 
-        if (!query) {
-            alert("Please enter a search term.");
-            return;
-        }
-
-        responseContainer.innerHTML = `<div style='color: #666; text-align: center;'>Searching for <em>${query}</em>...</div>`;
-        responseTimeContainer.innerHTML = "";
-
-        const startTime = performance.now();
-
-        fetch(`/search?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                const endTime = performance.now();
-                const timeTaken = (endTime - startTime).toFixed(2);
-
-                responseTimeContainer.innerHTML = `Response received in <span>${timeTaken}ms</span>`;
-
-                // Process and replace 0.05115252244738131 with 0.0
-                const sortedResponse = Object.entries(data)
-                    .map(([file, value]) => {
-                        let processedValue = Math.abs(parseFloat(value)); // Convert to positive value
-                        if (processedValue === 0.05115252244738131) {
-                            processedValue = 0.0; // Replace 0.05115252244738131 with 0.0
-                        }
-                        return { file, value: processedValue };
-                    })
-                    .sort((a, b) => b.value - a.value); // Sort in descending order by value
-
-                // Check if all values are 0.0 after replacement
-                const allValuesAreZero = sortedResponse.every(item => item.value === 0.0);
-
-                if (allValuesAreZero) {
-                    responseContainer.innerHTML = `<div style='color: #666; text-align: center;'>No results found</div>`;
-                    return;
-                }
-
-                responseContainer.innerHTML = ''; // Clear previous results
-
-                sortedResponse.forEach((item, index) => {
-                    setTimeout(() => {
-                        const responseItem = document.createElement("div");
-                        responseItem.className = `response-item ${index === 0 ? 'blue' : 'green'}`;
-                        responseItem.innerHTML = `<strong>${item.file}</strong>: ${item.value}`;
-                        responseContainer.appendChild(responseItem);
-                    }, index * 500); // Delay each item by 500ms
-                });
-            })
-            .catch(error => {
-                responseContainer.innerHTML = `<span style='color: #e53935;'>Error:</span> ${error.message}`;
-            });
+  <script>
+    // Initialize particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 70; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+          width: ${Math.random() * 8 + 3}px;
+          height: ${Math.random() * 8 + 3}px;
+          left: ${Math.random() * 100}%;
+          top: ${Math.random() * 100}%;
+          animation-delay: ${Math.random() * 3}s;
+          opacity: ${Math.random() * 0.4 + 0.2};
+        `;
+        container.appendChild(particle);
+      }
     }
-</script>
+    createParticles();
 
+    // Search functionality
+    let selectedIndex = -1;
+    let suggestions = [];
+    let debounceTimeout;
+
+    const searchInput = document.getElementById('search');
+    const suggestionsEl = document.getElementById('suggestions');
+    const resultsContainer = document.getElementById('search-results');
+
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(fetchSuggestions, 250);
+    });
+
+    document.addEventListener('keydown', handleKey);
+
+    async function fetchSuggestions() {
+      const prefix = searchInput.value.trim();
+
+      if (!prefix) {
+        suggestionsEl.classList.remove('visible');
+        return;
+      }
+
+      suggestionsEl.classList.add('visible');
+      suggestionsEl.innerHTML = `<div class="suggestion">🌀 Scanning neural network...</div>`;
+
+      try {
+        const response = await fetch(`http://localhost:8090/autocomplete?prefix=${encodeURIComponent(prefix)}`);
+        suggestions = await response.json();
+
+        suggestionsEl.innerHTML = suggestions.length ? 
+          suggestions.map((s, i) => `
+            <div class="suggestion ${i === 0 ? 'persistent-scan' : ''}" 
+                 onclick="selectSuggestion(${i})">
+              <div class="cyber-scan"></div>
+              ${s.query.replace(new RegExp(`(${prefix})`, 'gi'), '<span style="color: #ff3b8d">$1</span>')}
+            </div>
+          `).join('') : 
+          `<div class="suggestion">⚠️ No results in current dimension</div>`;
+      } catch (err) {
+        suggestionsEl.innerHTML = `<div class="suggestion">⚠️ Connection to core failed</div>`;
+      }
+    }
+
+    function handleKey(e) {
+      const items = suggestionsEl.querySelectorAll('.suggestion');
+      
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = e.key === 'ArrowDown' 
+          ? Math.min(selectedIndex + 1, items.length - 1)
+          : Math.max(selectedIndex - 1, -1);
+        
+        items.forEach((item, index) => {
+          item.style.background = index === selectedIndex 
+            ? 'rgba(255, 59, 141, 0.2)' 
+            : '';
+        });
+
+        if (selectedIndex >= 0) {
+          items[selectedIndex].scrollIntoView({ block: 'nearest' });
+        }
+      }
+
+      if (e.key === 'Enter') {
+        if (selectedIndex >= 0) {
+          selectSuggestion(selectedIndex);
+        } else {
+          performSearch();
+        }
+      }
+
+      if (e.key === 'Escape') {
+        suggestionsEl.classList.remove('visible');
+        selectedIndex = -1;
+      }
+    }
+
+    function selectSuggestion(index) {
+      searchInput.value = suggestions[index].query;
+      searchInput.focus();
+      suggestionsEl.classList.remove('visible');
+      selectedIndex = -1;
+      performSearch();
+    }
+
+    // Perform the actual search using your API
+    async function performSearch() {
+      const query = searchInput.value.trim();
+      
+      if (!query) {
+        return;
+      }
+      
+      // Clear previous results and show loading
+      resultsContainer.innerHTML = `
+        <div class="loading-animation">
+          <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div style="text-align: center; margin-top: 20px; color: var(--accent-2)">
+            Scanning neural pathways for "${query}"...
+          </div>
+        </div>
+      `;
+      resultsContainer.classList.add('visible');
+      
+      const startTime = performance.now();
+      
+      try {
+        // Call your search API
+        const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        const endTime = performance.now();
+        const timeTaken = (endTime - startTime).toFixed(2);
+        
+        displayResults(data, timeTaken);
+      } catch (error) {
+        resultsContainer.innerHTML = `
+          <div class="no-results">
+            ⚠️ Error connecting to neural core
+            <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</div>
+          </div>
+        `;
+      }
+    }
+
+    // Display search results from API
+    function displayResults(data, timeTaken) {
+      // Process data - replace specific value and sort
+      const processedData = Object.entries(data)
+        .map(([file, value]) => {
+          let processedValue = Math.abs(parseFloat(value));
+          if (processedValue === 0.05115252244738131) {
+            processedValue = 0.0;
+          }
+          return { file, value: processedValue };
+        })
+        .sort((a, b) => b.value - a.value);
+      
+      // Check if all values are zero
+      const allZero = processedData.every(item => item.value === 0.0);
+      
+      if (allZero) {
+        resultsContainer.innerHTML = `
+          <div class="no-results">
+            ⚠️ No results found for "${searchInput.value}"
+          </div>
+        `;
+        return;
+      }
+      
+      // Create response time element
+      const responseTimeEl = document.createElement('div');
+      responseTimeEl.className = 'response-time';
+      responseTimeEl.innerHTML = `Neural scan completed in <span>${timeTaken}ms</span>`;
+      
+      // Create results container
+      const resultsList = document.createElement('div');
+      
+      // Add items with animation delay
+      processedData.forEach((item, index) => {
+        const resultItem = document.createElement('div');
+        resultItem.className = `result-item ${index === 0 ? 'top-result' : ''}`;
+        resultItem.innerHTML = `
+          <div class="result-rank">#${index + 1}</div>
+          <div class="file-name">${item.file}</div>
+          <div class="similarity">Similarity score: <span>${item.value.toFixed(4)}</span></div>
+        `;
+        resultItem.style.animationDelay = `${index * 0.1}s`;
+        resultsList.appendChild(resultItem);
+      });
+      
+      // Update the container
+      resultsContainer.innerHTML = '';
+      resultsContainer.appendChild(responseTimeEl);
+      resultsContainer.appendChild(resultsList);
+    }
+
+    // Expose to global scope for onclick handlers
+    window.selectSuggestion = selectSuggestion;
+  </script>
 </body>
 </html>
