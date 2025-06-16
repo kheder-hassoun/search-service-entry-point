@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeuroSearch v4.0</title>
+  <title>EchoFind v4.0</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&display=swap">
   <style>
     :root {
       --bg-dark: #0a0a12;
@@ -16,6 +17,9 @@
       --success-green: #00ff9d;
       --warning-orange: #ff9d00;
       --glow-intensity: 0.5;
+      --echo-blue: #4d5df1;
+      --echo-teal: #00f3ff;
+      --echo-pink: #ff3b8d;
     }
 
     * {
@@ -25,7 +29,7 @@
     }
 
     body {
-      font-family: 'Space Mono', monospace;
+      font-family: 'Exo 2', sans-serif;
       background: var(--bg-dark);
       color: #e0e0ff;
       min-height: 100vh;
@@ -35,7 +39,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
       background-image: 
         radial-gradient(circle at 10% 20%, rgba(188, 19, 254, 0.05) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.05) 0%, transparent 20%),
@@ -52,6 +56,58 @@
       z-index: 10;
     }
 
+    .echo-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-symbol {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--echo-blue), var(--echo-teal));
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(77, 93, 241, 0.4);
+    }
+
+    .logo-symbol::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      height: 60%;
+      background: var(--bg-dark);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .logo-symbol::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20%;
+      height: 20%;
+      background: var(--echo-teal);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px var(--echo-teal);
+    }
+
+    .logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--echo-teal), var(--echo-blue), var(--echo-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    }
+
     .cyber-badge {
       background: linear-gradient(45deg, #2a1a3f, #1a2a4f);
       color: var(--accent-2);
@@ -66,15 +122,15 @@
 
     .search-box {
       position: relative;
-      width: 80%;
-      max-width: 720px;
+      width: 90%;
+      max-width: 780px;
       margin: 4rem 0 2rem;
       z-index: 5;
     }
 
     .search-box input {
       width: 100%;
-      padding: 1.4rem 4rem;
+      padding: 1.4rem 4rem 1.4rem 5.5rem;
       border: 2px solid transparent;
       border-radius: 12px;
       background: rgba(26, 26, 47, 0.3);
@@ -85,6 +141,7 @@
       z-index: 2;
       backdrop-filter: blur(5px);
       box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+      font-family: 'Exo 2', sans-serif;
     }
 
     .search-box input:focus {
@@ -101,7 +158,32 @@
       color: var(--accent-1);
       filter: drop-shadow(0 0 8px var(--accent-1));
       z-index: 3;
+      transition: all 0.3s ease;
     }
+
+    .typing-indicator {
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 4px;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--echo-teal);
+      opacity: 0.6;
+    }
+
+    .typing-dot:nth-child(1) { animation: pulse 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation: pulse 1.2s infinite 0.4s; }
+    .typing-dot:nth-child(3) { animation: pulse 1.2s infinite 0.8s; }
 
     .key-guide {
       position: absolute;
@@ -158,6 +240,7 @@
       backdrop-filter: blur(5px);
       border: 1px solid rgba(0, 243, 255, 0.05);
       margin-top: 0.5rem;
+      font-family: 'Exo 2', sans-serif;
     }
 
     .suggestion:first-child {
@@ -205,12 +288,13 @@
       overflow: hidden;
       white-space: nowrap;
       z-index: 5;
+      font-family: 'Exo 2', sans-serif;
     }
 
     /* Search results container */
     .search-results {
-      width: 80%;
-      max-width: 720px;
+      width: 90%;
+      max-width: 780px;
       margin-top: 1rem;
       max-height: 60vh;
       overflow-y: auto;
@@ -233,6 +317,7 @@
       opacity: 0;
       animation: fade-in 0.5s 0.3s forwards;
       letter-spacing: 1px;
+      font-family: 'Exo 2', sans-serif;
     }
 
     .response-time span {
@@ -254,6 +339,7 @@
       opacity: 0;
       animation: slide-in 0.5s forwards;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      font-family: 'Exo 2', sans-serif;
     }
 
     .result-item.top-result {
@@ -299,6 +385,7 @@
       background: rgba(26, 26, 47, 0.4);
       border-radius: 8px;
       backdrop-filter: blur(5px);
+      font-family: 'Exo 2', sans-serif;
     }
     
     .loading-animation {
@@ -310,6 +397,7 @@
       background: rgba(26, 26, 47, 0.4);
       border-radius: 8px;
       backdrop-filter: blur(5px);
+      font-family: 'Exo 2', sans-serif;
     }
     
     .loading-dots {
@@ -350,6 +438,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       backdrop-filter: blur(5px);
+      font-family: 'Exo 2', sans-serif;
     }
     
     .page-btn:hover {
@@ -371,9 +460,9 @@
 
     /* Animations */
     @keyframes border-glow {
-      0% { box-shadow: 0 0 10px var(--neon-purple); }
-      50% { box-shadow: 0 0 20px var(--neon-purple); }
-      100% { box-shadow: 0 0 10px var(--neon-purple); }
+      0% { box-shadow: 0 0 10px var(--neon-purple), 0 0 20px rgba(77, 93, 241, 0.5); }
+      50% { box-shadow: 0 0 20px var(--neon-purple), 0 0 40px rgba(77, 93, 241, 0.7); }
+      100% { box-shadow: 0 0 10px var(--neon-purple), 0 0 20px rgba(77, 93, 241, 0.5); }
     }
 
     @keyframes cascade {
@@ -444,7 +533,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      background: radial-gradient(circle at center, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
+      background: radial-gradient(circle at center, rgba(77, 93, 241, 0.2) 0%, transparent 70%);
       z-index: 1;
     }
     
@@ -464,6 +553,7 @@
       z-index: 0;
       pointer-events: none;
       user-select: none;
+      font-family: 'Orbitron', sans-serif;
     }
     
     .floating-text.top {
@@ -477,24 +567,78 @@
       left: 10%;
       transform: rotate(-15deg);
     }
+    
+    .echo-pulse {
+      animation: echo-pulse 0.8s infinite alternate;
+    }
+    
+    @keyframes echo-pulse {
+      0% { filter: drop-shadow(0 0 8px var(--accent-1)); }
+      100% { filter: drop-shadow(0 0 20px var(--accent-1)) brightness(1.5); }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .search-box {
+        width: 95%;
+      }
+      
+      .cyber-header {
+        top: 1rem;
+        left: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+      
+      .floating-text {
+        font-size: 6rem;
+      }
+      
+      .search-box input {
+        padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+      }
+      
+      .search-icon {
+        left: 1rem;
+      }
+      
+      .typing-indicator {
+        right: 1rem;
+      }
+      
+      .suggestions {
+        width: calc(100% - 2rem);
+        left: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="glow"></div>
-  <div class="floating-text top">NEURO</div>
-  <div class="floating-text bottom">SEARCH</div>
+  <div class="floating-text top">ECHO</div>
+  <div class="floating-text bottom">FIND</div>
   
   <div class="cyber-header">
-    <div class="cyber-badge">NeuroSearch v4.0</div>
+    <div class="echo-logo">
+      <div class="logo-symbol"></div>
+      <div class="logo-text">EchoFind</div>
+    </div>
+    <div class="cyber-badge">v4.0</div>
   </div>
 
   <div class="search-box">
     <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
     </svg>
+    <div class="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
     <input type="text" 
            id="search" 
-           placeholder="Start typing to search .."
+           placeholder="Start typing to search with EchoFind..."
            autocomplete="off">
     <div class="key-guide">
       <span>↑↓ Navigate</span>
@@ -508,7 +652,7 @@
     <!-- Results will be populated here -->
   </div>
 
-  <div class="cyber-footer">Developed by KHEDER</div>
+  <div class="cyber-footer">EchoFind by KHEDER</div>
 
   <div class="particles" id="particles"></div>
 
@@ -520,12 +664,17 @@
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.cssText = `
+          position: absolute;
           width: ${Math.random() * 8 + 3}px;
           height: ${Math.random() * 8 + 3}px;
           left: ${Math.random() * 100}%;
           top: ${Math.random() * 100}%;
-          animation-delay: ${Math.random() * 3}s;
+          background: ${i % 3 === 0 ? 'var(--echo-blue)' : i % 3 === 1 ? 'var(--echo-teal)' : 'var(--echo-pink)'};
+          border-radius: 50%;
           opacity: ${Math.random() * 0.4 + 0.2};
+          animation: particle-float ${Math.random() * 10 + 10}s infinite ease-in-out;
+          animation-delay: ${Math.random() * 5}s;
+          z-index: 0;
         `;
         container.appendChild(particle);
       }
@@ -539,17 +688,36 @@
     let currentPage = 1;
     const pageSize = 4;
     let allResults = [];
+    let isSearching = false;
 
     const searchInput = document.getElementById('search');
     const suggestionsEl = document.getElementById('suggestions');
     const resultsContainer = document.getElementById('search-results');
+    const typingIndicator = document.querySelector('.typing-indicator');
+    const searchIcon = document.querySelector('.search-icon');
 
     searchInput.addEventListener('input', (e) => {
+      // Show typing indicator
+      typingIndicator.style.opacity = '1';
+      searchIcon.classList.add('echo-pulse');
+      
       clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(fetchSuggestions, 250);
+      debounceTimeout = setTimeout(() => {
+        typingIndicator.style.opacity = '0';
+        searchIcon.classList.remove('echo-pulse');
+        fetchSuggestions();
+      }, 250);
     });
 
     document.addEventListener('keydown', handleKey);
+
+    // Reset search when input is cleared
+    searchInput.addEventListener('input', () => {
+      if (!searchInput.value.trim()) {
+        resultsContainer.classList.remove('visible');
+        suggestionsEl.classList.remove('visible');
+      }
+    });
 
     async function fetchSuggestions() {
       const prefix = searchInput.value.trim();
@@ -560,10 +728,17 @@
       }
 
       suggestionsEl.classList.add('visible');
-      suggestionsEl.innerHTML = `<div class="suggestion">🌀 Scanning neural network...</div>`;
+      suggestionsEl.innerHTML = `<div class="suggestion">🌀 Scanning echo patterns...</div>`;
+      selectedIndex = -1;
 
       try {
+        // Call the autocomplete API
         const response = await fetch(`http://localhost:8090/autocomplete?prefix=${encodeURIComponent(prefix)}`);
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        
         suggestions = await response.json();
 
         suggestionsEl.innerHTML = suggestions.length ? 
@@ -576,7 +751,7 @@
           `).join('') : 
           `<div class="suggestion">⚠️ No results in current dimension</div>`;
       } catch (err) {
-        suggestionsEl.innerHTML = `<div class="suggestion">⚠️ Connection to core failed</div>`;
+        suggestionsEl.innerHTML = `<div class="suggestion">⚠️ Connection to echo core failed</div>`;
       }
     }
 
@@ -622,13 +797,17 @@
       performSearch();
     }
 
-    // Perform the actual search using your API
+    // Perform the actual search
     async function performSearch() {
+      if (isSearching) return;
+      
       const query = searchInput.value.trim();
       
       if (!query) {
         return;
       }
+      
+      isSearching = true;
       
       // Clear previous results and show loading
       resultsContainer.innerHTML = `
@@ -639,18 +818,19 @@
             <div class="dot"></div>
           </div>
           <div style="text-align: center; margin-top: 20px; color: var(--accent-2)">
-            Scanning neural pathways for "${query}"...
+            Scanning echo patterns for "${query}"...
           </div>
         </div>
       `;
       resultsContainer.classList.add('visible');
       currentPage = 1;
+      suggestionsEl.classList.remove('visible');
       
       const startTime = performance.now();
       
       try {
-        // Call your search API
-        const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
+        // Call the search API
+        const response = await fetch(`http://localhost:8088/search?query=${encodeURIComponent(query)}`);
         
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`);
@@ -675,14 +855,16 @@
       } catch (error) {
         resultsContainer.innerHTML = `
           <div class="no-results">
-            ⚠️ Error connecting to neural core
+            ⚠️ Error connecting to echo core
             <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</div>
           </div>
         `;
+      } finally {
+        isSearching = false;
       }
     }
 
-    // Display search results from API
+    // Display search results
     function displayResults(timeTaken) {
       // Check if all values are zero
       const allZero = allResults.every(item => item.value === 0.0);
@@ -704,7 +886,7 @@
       // Create response time element
       const responseTimeEl = document.createElement('div');
       responseTimeEl.className = 'response-time';
-      responseTimeEl.innerHTML = `Neural scan completed in <span>${timeTaken}ms</span>`;
+      responseTimeEl.innerHTML = `Echo scan completed in <span>${timeTaken}ms</span>`;
       
       // Create results container
       const resultsList = document.createElement('div');
@@ -762,7 +944,7 @@
           left: ${Math.random() * 100}%;
           top: ${Math.random() * 100}%;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(188, 19, 254, 0.1) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(77, 93, 241, 0.1) 0%, transparent 70%);
           filter: blur(20px);
           opacity: ${Math.random() * 0.3 + 0.1};
           pointer-events: none;
