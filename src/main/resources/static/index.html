@@ -53,7 +53,7 @@
       scrollbar-width: none; /* Hide scrollbar for Firefox */
       -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
     }
-    
+
     body::-webkit-scrollbar {
       display: none; /* Hide scrollbar for Chrome, Safari and Opera */
     }
@@ -450,7 +450,7 @@
     .footer-left {
       text-align: left;
     }
-    
+
     .footer-right {
       text-align: right;
     }
@@ -473,15 +473,16 @@
       width: 95%;
       max-width: 780px;
       margin-top: 1rem;
-      max-height: 55vh;
+      max-height: 60vh;
       overflow-y: auto;
       opacity: 0;
       transform: translateY(20px);
       transition: all 0.5s ease;
-      z-index: 4;
+      z-index: 6;
       /* Hide scrollbar for all browsers */
       scrollbar-width: none;
       -ms-overflow-style: none;
+  bottom: 4rem; /* Space for footer */
     }
 
     .search-results::-webkit-scrollbar {
@@ -577,7 +578,7 @@
       font-size: 0.9rem;
       margin-bottom: 0.8rem;
     }
-    
+
     /* Modern download button styling */
     .download-btn {
       display: inline-flex;
@@ -597,12 +598,12 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    
+
     .download-btn:hover {
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
     }
-    
+
     .download-btn::before {
       content: "";
       position: absolute;
@@ -614,18 +615,18 @@
       transform: translateX(-100%);
       transition: 0.5s;
     }
-    
+
     .download-btn:hover::before {
       transform: translateX(100%);
     }
-    
+
     .download-btn svg {
       width: 20px;
       height: 20px;
       fill: white;
       transition: transform 0.3s ease;
     }
-    
+
     .download-btn:hover svg {
       transform: translateY(2px);
     }
@@ -822,77 +823,77 @@
       .search-title {
         font-size: 1.8rem;
       }
-      
+
       .logo-text {
         font-size: 1.6rem;
       }
-      
+
       .search-subtitle {
         font-size: 1rem;
       }
-      
+
       .search-box input {
         padding: 1rem 3rem 1rem 3.8rem;
         font-size: 0.95rem;
       }
-      
+
       .search-icon {
         left: 1rem;
         width: 20px;
         height: 20px;
       }
-      
+
       .typing-indicator {
         right: 1rem;
       }
-      
+
       .tagline-item {
         font-size: 0.9rem;
       }
-      
+
       .result-item {
         padding: 1rem;
       }
-      
+
       .result-item .file-name {
         font-size: 1rem;
         max-width: calc(100% - 50px);
       }
-      
+
       .footer {
         font-size: 0.9rem;
         bottom: 1rem;
       }
-      
+
       .footer-tagline {
         font-size: 1rem;
       }
-      
+
       .download-btn {
         width: 36px;
         height: 36px;
       }
     }
-    
+
     @media (max-height: 600px) {
       .header {
         top: 0.5rem;
       }
-      
+
       .tagline-container {
         margin-top: 1.5rem;
         height: 32px;
       }
-      
+
       .search-container {
         margin-top: 0.2rem;
         margin-bottom: 1rem;
       }
-      
+
       .footer {
         bottom: 0.5rem;
       }
-      
+
       .search-results {
         max-height: 45vh;
       }
@@ -900,449 +901,449 @@
   </style>
 </head>
 <body>
-  <div class="floating-element"></div>
-  <div class="floating-element"></div>
-  <div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
 
-  <div class="header">
-    <div class="echo-logo">
-      <div class="logo-symbol"></div>
-      <div class="logo-text">EchoFind</div>
+<div class="header">
+  <div class="echo-logo">
+    <div class="logo-symbol"></div>
+    <div class="logo-text">EchoFind</div>
+  </div>
+  <div class="version-badge">V.1.0.5</div>
+</div>
+
+<div class="tagline-container">
+  <div class="tagline-item active">Where Ideas Become Reality</div>
+  <div class="tagline-item">From Concept to Creation</div>
+  <div class="tagline-item">Transforming Thoughts into Solutions</div>
+  <div class="tagline-item">Super fast AutoComplete</div>
+  <div class="tagline-item">Your Ideas, Amplified</div>
+  <div class="tagline-item">The Future of Discovery</div>
+  <div class="tagline-item">We are the FUTURE</div>
+  <div class="tagline-item">From Vision to Implementation</div>
+</div>
+
+<div class="search-container">
+  <h1 class="search-title">EchoFind Search</h1>
+  <p class="search-subtitle">
+    From <span class="subtitle-highlight">Idea</span> To <span class="subtitle-highlight">Product</span>
+  </p>
+
+  <div class="search-box">
+    <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+    </svg>
+    <div class="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
     </div>
-    <div class="version-badge">V.1.0.5</div>
-  </div>
-
-  <div class="tagline-container">
-    <div class="tagline-item active">Where Ideas Become Reality</div>
-    <div class="tagline-item">From Concept to Creation</div>
-    <div class="tagline-item">Transforming Thoughts into Solutions</div>
-    <div class="tagline-item">Super fast AutoComplete</div>
-    <div class="tagline-item">Your Ideas, Amplified</div>
-    <div class="tagline-item">The Future of Discovery</div>
-    <div class="tagline-item">We are the FUTURE</div>
-    <div class="tagline-item">From Vision to Implementation</div>
-  </div>
-
-  <div class="search-container">
-    <h1 class="search-title">EchoFind Search</h1>
-    <p class="search-subtitle">
-      From <span class="subtitle-highlight">Idea</span> To <span class="subtitle-highlight">Product</span>
-    </p>
-
-    <div class="search-box">
-      <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-      </svg>
-      <div class="typing-indicator">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      </div>
-      <input type="text"
-             id="search"
-             placeholder="Search for ideas, concepts, or solutions..."
-             autocomplete="off">
-      <div class="key-guide">
-        <span>↑↓ Navigate</span>
-        <span>⏎ Select</span>
-        <span>⎋ Close</span>
-      </div>
-      <div id="suggestions" class="suggestions"></div>
+    <input type="text"
+           id="search"
+           placeholder="Search for ideas, concepts, or solutions..."
+           autocomplete="off">
+    <div class="key-guide">
+      <span>↑↓ Navigate</span>
+      <span>⏎ Select</span>
+      <span>⎋ Close</span>
     </div>
+    <div id="suggestions" class="suggestions"></div>
   </div>
+</div>
 
-  <div id="search-results" class="search-results">
-    <!-- Results will be populated here -->
+<div id="search-results" class="search-results">
+  <!-- Results will be populated here -->
+</div>
+
+<div class="footer">
+  <div class="footer-left">
+    <div class="footer-tagline">EchoFind by KHEDER</div>
   </div>
-
-  <div class="footer">
-    <div class="footer-left">
-      <div class="footer-tagline">EchoFind by KHEDER</div>
-    </div>
-    <div class="footer-right">
-      <div class="copyright">© 2025</div>
-    </div>
+  <div class="footer-right">
+    <div class="copyright">© 2025</div>
   </div>
+</div>
 
-  <script>
-    // Initialize the tagline with fade animations
-    function initTagline() {
-      const taglineItems = document.querySelectorAll('.tagline-item');
-      let currentIndex = 0;
+<script>
+  // Initialize the tagline with fade animations
+  function initTagline() {
+    const taglineItems = document.querySelectorAll('.tagline-item');
+    let currentIndex = 0;
 
-      taglineItems.forEach((item, index) => {
-        if (index !== 0) {
-          item.style.opacity = '0';
-        }
-      });
+    taglineItems.forEach((item, index) => {
+      if (index !== 0) {
+        item.style.opacity = '0';
+      }
+    });
 
-      setInterval(() => {
-        taglineItems[currentIndex].classList.remove('active');
-        taglineItems[currentIndex].style.opacity = '0';
-        taglineItems[currentIndex].style.transform = 'translateY(10px)';
+    setInterval(() => {
+      taglineItems[currentIndex].classList.remove('active');
+      taglineItems[currentIndex].style.opacity = '0';
+      taglineItems[currentIndex].style.transform = 'translateY(10px)';
 
-        currentIndex = (currentIndex + 1) % taglineItems.length;
+      currentIndex = (currentIndex + 1) % taglineItems.length;
 
-        setTimeout(() => {
-          taglineItems[currentIndex].classList.add('active');
-          taglineItems[currentIndex].style.opacity = '1';
-          taglineItems[currentIndex].style.transform = 'translateY(0)';
-        }, 300);
-      }, 3000);
+      setTimeout(() => {
+        taglineItems[currentIndex].classList.add('active');
+        taglineItems[currentIndex].style.opacity = '1';
+        taglineItems[currentIndex].style.transform = 'translateY(0)';
+      }, 300);
+    }, 3000);
+  }
+
+  // Floating particles effect
+  function createParticles() {
+    const container = document.body;
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.cssText = `
+        position: absolute;
+        width: ${Math.random() * 6 + 5}px;
+        height: ${Math.random() * 6 + 5}px;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        background: ${i % 3 === 0 ? '#3b82f6' : i % 3 === 1 ? '#06b6d4' : '#93c5fd'};
+        border-radius: 50%;
+        opacity: ${Math.random() * 0.3 + 0.1};
+        animation: particle-float ${Math.random() * 10 + 10}s infinite ease-in-out;
+        animation-delay: ${Math.random() * 5}s;
+        z-index: 0;
+        pointer-events: none;
+      `;
+      container.appendChild(particle);
     }
+  }
 
-    // Floating particles effect
-    function createParticles() {
-      const container = document.body;
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.cssText = `
-          position: absolute;
-          width: ${Math.random() * 6 + 5}px;
-          height: ${Math.random() * 6 + 5}px;
-          left: ${Math.random() * 100}%;
-          top: ${Math.random() * 100}%;
-          background: ${i % 3 === 0 ? '#3b82f6' : i % 3 === 1 ? '#06b6d4' : '#93c5fd'};
-          border-radius: 50%;
-          opacity: ${Math.random() * 0.3 + 0.1};
-          animation: particle-float ${Math.random() * 10 + 10}s infinite ease-in-out;
-          animation-delay: ${Math.random() * 5}s;
-          z-index: 0;
-          pointer-events: none;
-        `;
-        container.appendChild(particle);
+  // Add CSS for particle animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes particle-float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(1.1);
+        opacity: 0.3;
       }
     }
+  `;
+  document.head.appendChild(style);
 
-    // Add CSS for particle animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes particle-float {
-        0%, 100% {
-          transform: translate(0, 0) scale(1);
-          opacity: 0.6;
-        }
-        50% {
-          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(1.1);
-          opacity: 0.3;
-        }
-      }
+  // Initialize tagline and particles
+  initTagline();
+  createParticles();
+
+  // Search functionality
+  let selectedIndex = -1;
+  let suggestions = [];
+  let allSuggestions = [];
+  let debounceTimeout;
+  let currentPage = 1;
+  const pageSize = 4;
+  let allResults = [];
+  let isSearching = false;
+  let suggestionSelected = false;
+  let showAllSuggestions = false;
+
+  const searchInput = document.getElementById('search');
+  const suggestionsEl = document.getElementById('suggestions');
+  const resultsContainer = document.getElementById('search-results');
+  const typingIndicator = document.querySelector('.typing-indicator');
+
+  searchInput.addEventListener('input', (e) => {
+    typingIndicator.style.opacity = '1';
+
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      typingIndicator.style.opacity = '0';
+      fetchSuggestions();
+    }, 250);
+  });
+
+  document.addEventListener('keydown', handleKey);
+
+  searchInput.addEventListener('input', () => {
+    if (!searchInput.value.trim()) {
+      resultsContainer.classList.remove('visible');
+      suggestionsEl.classList.remove('visible');
+      selectedIndex = -1;
+      showAllSuggestions = false;
+    }
+  });
+
+  async function fetchSuggestions() {
+    const prefix = searchInput.value.trim();
+
+    if (!prefix) {
+      suggestionsEl.classList.remove('visible');
+      return;
+    }
+
+    suggestionsEl.classList.add('visible');
+    suggestionsEl.innerHTML = `
+      <div class="suggestion-list">
+        <div class="suggestion">
+          <div class="suggestion-icon">🌀</div>
+          Scanning echo patterns...
+        </div>
+      </div>
     `;
-    document.head.appendChild(style);
+    selectedIndex = -1;
 
-    // Initialize tagline and particles
-    initTagline();
-    createParticles();
+    try {
+      const response = await fetch(`http://172.29.5.41:30082/autocomplete?prefix=${encodeURIComponent(prefix)}`);
 
-    // Search functionality
-    let selectedIndex = -1;
-    let suggestions = [];
-    let allSuggestions = [];
-    let debounceTimeout;
-    let currentPage = 1;
-    const pageSize = 4;
-    let allResults = [];
-    let isSearching = false;
-    let suggestionSelected = false;
-    let showAllSuggestions = false;
-
-    const searchInput = document.getElementById('search');
-    const suggestionsEl = document.getElementById('suggestions');
-    const resultsContainer = document.getElementById('search-results');
-    const typingIndicator = document.querySelector('.typing-indicator');
-
-    searchInput.addEventListener('input', (e) => {
-      typingIndicator.style.opacity = '1';
-
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-        typingIndicator.style.opacity = '0';
-        fetchSuggestions();
-      }, 250);
-    });
-
-    document.addEventListener('keydown', handleKey);
-
-    searchInput.addEventListener('input', () => {
-      if (!searchInput.value.trim()) {
-        resultsContainer.classList.remove('visible');
-        suggestionsEl.classList.remove('visible');
-        selectedIndex = -1;
-        showAllSuggestions = false;
-      }
-    });
-
-    async function fetchSuggestions() {
-      const prefix = searchInput.value.trim();
-
-      if (!prefix) {
-        suggestionsEl.classList.remove('visible');
-        return;
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
 
-      suggestionsEl.classList.add('visible');
+      allSuggestions = await response.json();
+      suggestions = showAllSuggestions ? allSuggestions : allSuggestions.slice(0, 5);
+
+      const suggestionList = suggestions.map((s, i) => `
+        <div class="suggestion" onclick="selectSuggestion(${i})" data-index="${i}">
+          <div class="suggestion-icon">${i === 0 ? '🔥' : i === 1 ? '🔍' : i === 2 ? '🔍' : '🔍'}</div>
+          ${s.query.replace(new RegExp(`(${prefix})`, 'gi'), '<span class="suggestion-highlight">$1</span>')}
+        </div>
+      `).join('');
+
+      const showMoreButton = allSuggestions.length > 5 && !showAllSuggestions ? `
+        <div class="show-more-suggestions" onclick="toggleShowMoreSuggestions()">
+          Show ${allSuggestions.length - 5} more results
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+      ` : '';
+
+      suggestionsEl.innerHTML = suggestions.length ? `
+        <div class="suggestion-list">
+          ${suggestionList}
+          ${showMoreButton}
+        </div>
+      ` : `
+        <div class="suggestion-list">
+          <div class="suggestion">
+            <div class="suggestion-icon">⚠️</div>
+            No results in current dimension
+          </div>
+        </div>
+      `;
+    } catch (err) {
       suggestionsEl.innerHTML = `
         <div class="suggestion-list">
           <div class="suggestion">
-            <div class="suggestion-icon">🌀</div>
-            Scanning echo patterns...
+            <div class="suggestion-icon">⚠️</div>
+            Connection to echo core failed
           </div>
         </div>
       `;
-      selectedIndex = -1;
+    }
+  }
 
-      try {
-        const response = await fetch(`http://172.29.5.41:30082/autocomplete?prefix=${encodeURIComponent(prefix)}`);
+  function toggleShowMoreSuggestions() {
+    showAllSuggestions = true;
+    fetchSuggestions();
+  }
 
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
+  function handleKey(e) {
+    const items = suggestionsEl.querySelectorAll('.suggestion');
 
-        allSuggestions = await response.json();
-        suggestions = showAllSuggestions ? allSuggestions : allSuggestions.slice(0, 5);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
 
-        const suggestionList = suggestions.map((s, i) => `
-          <div class="suggestion" onclick="selectSuggestion(${i})" data-index="${i}">
-            <div class="suggestion-icon">${i === 0 ? '🔥' : i === 1 ? '🔍' : i === 2 ? '🔍' : '🔍'}</div>
-            ${s.query.replace(new RegExp(`(${prefix})`, 'gi'), '<span class="suggestion-highlight">$1</span>')}
-          </div>
-        `).join('');
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].classList.remove('selected');
+      }
 
-        const showMoreButton = allSuggestions.length > 5 && !showAllSuggestions ? `
-          <div class="show-more-suggestions" onclick="toggleShowMoreSuggestions()">
-            Show ${allSuggestions.length - 5} more results
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 9l-7 7-7-7"/>
-            </svg>
-          </div>
-        ` : '';
+      selectedIndex = e.key === 'ArrowDown'
+        ? Math.min(selectedIndex + 1, items.length - 1)
+        : Math.max(selectedIndex - 1, -1);
 
-        suggestionsEl.innerHTML = suggestions.length ? `
-          <div class="suggestion-list">
-            ${suggestionList}
-            ${showMoreButton}
-          </div>
-        ` : `
-          <div class="suggestion-list">
-            <div class="suggestion">
-              <div class="suggestion-icon">⚠️</div>
-              No results in current dimension
-            </div>
-          </div>
-        `;
-      } catch (err) {
-        suggestionsEl.innerHTML = `
-          <div class="suggestion-list">
-            <div class="suggestion">
-              <div class="suggestion-icon">⚠️</div>
-              Connection to echo core failed
-            </div>
-          </div>
-        `;
+      if (selectedIndex >= 0) {
+        items[selectedIndex].classList.add('selected');
+        items[selectedIndex].scrollIntoView({ block: 'nearest' });
       }
     }
 
-    function toggleShowMoreSuggestions() {
-      showAllSuggestions = true;
-      fetchSuggestions();
-    }
-
-    function handleKey(e) {
-      const items = suggestionsEl.querySelectorAll('.suggestion');
-
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        e.preventDefault();
-
-        if (selectedIndex >= 0 && items[selectedIndex]) {
-          items[selectedIndex].classList.remove('selected');
-        }
-
-        selectedIndex = e.key === 'ArrowDown'
-          ? Math.min(selectedIndex + 1, items.length - 1)
-          : Math.max(selectedIndex - 1, -1);
-
-        if (selectedIndex >= 0) {
-          items[selectedIndex].classList.add('selected');
-          items[selectedIndex].scrollIntoView({ block: 'nearest' });
-        }
-      }
-
-      if (e.key === 'Enter') {
-        if (suggestionsEl.classList.contains('visible') && selectedIndex >= 0) {
-          selectSuggestion(selectedIndex);
-          selectedIndex = -1;
-          suggestionSelected = true;
-        } else {
-          performSearch();
-          suggestionSelected = false;
-        }
-      }
-
-      if (e.key === 'Escape') {
-        suggestionsEl.classList.remove('visible');
+    if (e.key === 'Enter') {
+      if (suggestionsEl.classList.contains('visible') && selectedIndex >= 0) {
+        selectSuggestion(selectedIndex);
         selectedIndex = -1;
-        showAllSuggestions = false;
+        suggestionSelected = true;
+      } else {
+        performSearch();
+        suggestionSelected = false;
       }
     }
 
-    function selectSuggestion(index) {
-      const selectedSuggestion = showAllSuggestions ? allSuggestions[index] : suggestions[index];
-      searchInput.value = selectedSuggestion.query;
-      searchInput.focus();
+    if (e.key === 'Escape') {
       suggestionsEl.classList.remove('visible');
       selectedIndex = -1;
       showAllSuggestions = false;
-      suggestionSelected = true;
+    }
+  }
 
-      const items = suggestionsEl.querySelectorAll('.suggestion');
-      items.forEach(item => item.classList.remove('selected'));
+  function selectSuggestion(index) {
+    const selectedSuggestion = showAllSuggestions ? allSuggestions[index] : suggestions[index];
+    searchInput.value = selectedSuggestion.query;
+    searchInput.focus();
+    suggestionsEl.classList.remove('visible');
+    selectedIndex = -1;
+    showAllSuggestions = false;
+    suggestionSelected = true;
+
+    const items = suggestionsEl.querySelectorAll('.suggestion');
+    items.forEach(item => item.classList.remove('selected'));
+  }
+
+  async function performSearch() {
+    if (isSearching) return;
+
+    const query = searchInput.value.trim();
+
+    if (!query) {
+      return;
     }
 
-    async function performSearch() {
-      if (isSearching) return;
+    isSearching = true;
 
-      const query = searchInput.value.trim();
+    resultsContainer.innerHTML = `
+      <div class="loading-animation">
+        <div class="loading-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <div style="text-align: center; color: var(--text-light); font-size: 1.1rem;">
+          Scanning for "<span style="color: var(--accent-blue);">${query}</span>"...
+        </div>
+      </div>
+    `;
+    resultsContainer.classList.add('visible');
+    currentPage = 1;
+    suggestionsEl.classList.remove('visible');
+    showAllSuggestions = false;
 
-      if (!query) {
-        return;
+    const startTime = performance.now();
+
+    try {
+      const response = await fetch(`http://172.29.5.41:30088/search?query=${encodeURIComponent(query)}`);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
 
-      isSearching = true;
+      const data = await response.json();
+      const endTime = performance.now();
+      const timeTaken = (endTime - startTime).toFixed(2);
 
+      allResults = Object.entries(data)
+        .map(([file, value]) => {
+          let processedValue = Math.abs(parseFloat(value));
+          if (processedValue === 0.05115252244738131) {
+            processedValue = 0.0;
+          }
+          return { file, value: processedValue };
+        })
+        .sort((a, b) => b.value - a.value);
+
+      displayResults(timeTaken);
+    } catch (error) {
       resultsContainer.innerHTML = `
-        <div class="loading-animation">
-          <div class="loading-dots">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </div>
-          <div style="text-align: center; color: var(--text-light); font-size: 1.1rem;">
-            Scanning for "<span style="color: var(--accent-blue);">${query}</span>"...
-          </div>
+        <div class="no-results">
+          ⚠️ Error connecting to echo core
+          <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</div>
         </div>
       `;
-      resultsContainer.classList.add('visible');
-      currentPage = 1;
-      suggestionsEl.classList.remove('visible');
-      showAllSuggestions = false;
+    } finally {
+      isSearching = false;
+    }
+  }
 
-      const startTime = performance.now();
+  function displayResults(timeTaken) {
+    const allZero = allResults.every(item => item.value === 0.0);
 
-      try {
-        const response = await fetch(`http://172.29.5.41:30088/search?query=${encodeURIComponent(query)}`);
-
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const endTime = performance.now();
-        const timeTaken = (endTime - startTime).toFixed(2);
-
-        allResults = Object.entries(data)
-          .map(([file, value]) => {
-            let processedValue = Math.abs(parseFloat(value));
-            if (processedValue === 0.05115252244738131) {
-              processedValue = 0.0;
-            }
-            return { file, value: processedValue };
-          })
-          .sort((a, b) => b.value - a.value);
-
-        displayResults(timeTaken);
-      } catch (error) {
+    if (allZero) {
         resultsContainer.innerHTML = `
-          <div class="no-results">
-            ⚠️ Error connecting to echo core
-            <div style="font-size: 0.9rem; margin-top: 0.5rem;">${error.message}</div>
-          </div>
+            <div class="no-results">
+                ⚠️ No results found for "${searchInput.value}"
+            </div>
         `;
-      } finally {
-        isSearching = false;
-      }
+        resultsContainer.classList.add('visible');
+        return;
     }
 
-    function displayResults(timeTaken) {
-      const allZero = allResults.every(item => item.value === 0.0);
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, allResults.length);
+    const pageResults = allResults.slice(0, endIndex);
 
-      if (allZero) {
-          resultsContainer.innerHTML = `
-              <div class="no-results">
-                  ⚠️ No results found for "${searchInput.value}"
-              </div>
-          `;
-          resultsContainer.classList.add('visible');
-          return;
-      }
+    const responseTimeEl = document.createElement('div');
+    responseTimeEl.className = 'response-time';
+    responseTimeEl.innerHTML = `Echo scan completed in <span>${timeTaken}ms</span>`;
 
-      const startIndex = (currentPage - 1) * pageSize;
-      const endIndex = Math.min(startIndex + pageSize, allResults.length);
-      const pageResults = allResults.slice(0, endIndex);
+    const resultsList = document.createElement('div');
 
-      const responseTimeEl = document.createElement('div');
-      responseTimeEl.className = 'response-time';
-      responseTimeEl.innerHTML = `Echo scan completed in <span>${timeTaken}ms</span>`;
+    pageResults.forEach((item, index) => {
+        const resultItem = document.createElement('div');
+        resultItem.className = `result-item ${index === 0 ? 'top-result' : ''}`;
 
-      const resultsList = document.createElement('div');
+        const downloadURL = `http://172.29.5.41:30088/download?path=${encodeURIComponent(item.file)}`;
 
-      pageResults.forEach((item, index) => {
-          const resultItem = document.createElement('div');
-          resultItem.className = `result-item ${index === 0 ? 'top-result' : ''}`;
-          
-          const downloadURL = `http://172.29.5.41:30088/download?path=${encodeURIComponent(item.file)}`;
-          
-          resultItem.innerHTML = `
-              <div class="result-rank">#${index + 1}</div>
-              <div class="file-header">
-                <!-- Download button moved to left -->
-                <a href="${downloadURL}" class="download-btn" target="_blank">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                  </svg>
-                </a>
-                <div class="file-name">${item.file}</div>
-              </div>
-              <div class="similarity">Similarity score: <span>${item.value.toFixed(4)}</span></div>
-          `;
-          resultItem.style.animationDelay = `${index * 0.1}s`;
-          resultsList.appendChild(resultItem);
-      });
+        resultItem.innerHTML = `
+            <div class="result-rank">#${index + 1}</div>
+            <div class="file-header">
+              <!-- Download button moved to left -->
+              <a href="${downloadURL}" class="download-btn" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                </svg>
+              </a>
+              <div class="file-name">${item.file}</div>
+            </div>
+            <div class="similarity">Similarity score: <span>${item.value.toFixed(4)}</span></div>
+        `;
+        resultItem.style.animationDelay = `${index * 0.1}s`;
+        resultsList.appendChild(resultItem);
+    });
 
-      const pagination = document.createElement('div');
-      pagination.className = 'pagination';
+    const pagination = document.createElement('div');
+    pagination.className = 'pagination';
 
-      if (endIndex < allResults.length) {
-          const showMoreBtn = document.createElement('button');
-          showMoreBtn.className = 'page-btn show-more';
-          showMoreBtn.textContent = 'Show More Results';
-          showMoreBtn.addEventListener('click', () => {
-              currentPage++;
-              displayResults(timeTaken);
-          });
-          pagination.appendChild(showMoreBtn);
-      }
-
-      resultsContainer.innerHTML = '';
-      resultsContainer.appendChild(responseTimeEl);
-      resultsContainer.appendChild(resultsList);
-
-      if (endIndex < allResults.length) {
-          resultsContainer.appendChild(pagination);
-      }
-
-      resultsContainer.classList.add('visible');
-
-      setTimeout(() => {
-          document.querySelectorAll('.result-item').forEach(item => {
-              item.classList.add('result-animation');
-          });
-      }, 100);
+    if (endIndex < allResults.length) {
+        const showMoreBtn = document.createElement('button');
+        showMoreBtn.className = 'page-btn show-more';
+        showMoreBtn.textContent = 'Show More Results';
+        showMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            displayResults(timeTaken);
+        });
+        pagination.appendChild(showMoreBtn);
     }
 
-    // Expose to global scope for onclick handlers
-    window.selectSuggestion = selectSuggestion;
-    window.toggleShowMoreSuggestions = toggleShowMoreSuggestions;
-  </script>
+    resultsContainer.innerHTML = '';
+    resultsContainer.appendChild(responseTimeEl);
+    resultsContainer.appendChild(resultsList);
+
+    if (endIndex < allResults.length) {
+        resultsContainer.appendChild(pagination);
+    }
+
+    resultsContainer.classList.add('visible');
+
+    setTimeout(() => {
+        document.querySelectorAll('.result-item').forEach(item => {
+            item.classList.add('result-animation');
+        });
+    }, 100);
+  }
+
+  // Expose to global scope for onclick handlers
+  window.selectSuggestion = selectSuggestion;
+  window.toggleShowMoreSuggestions = toggleShowMoreSuggestions;
+</script>
 </body>
 </html>
