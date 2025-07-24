@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EchoFind Admin </title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #006aff;
+  --primary-light: #4d8dff;
+  --primary-dark: #0051cc;
+  --background: linear-gradient(135deg, #f0f7ff 0%, #e1edff 100%);
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #777;
+  --success: #4CAF50;
+  --error: #F44336;
+  --border: #e0e7ff;
+  --shadow: 0 12px 30px rgba(0, 106, 255, 0.15);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--background);
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+#card {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+#card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+/* Added EchoFind logo styles */
+.logo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.echo-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-symbol {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+  animation: float 6s infinite ease-in-out;
+}
+
+.logo-symbol::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  height: 60%;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logo-symbol::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  height: 20%;
+  background: #06b6d4;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 5px #06b6d4;
+}
+
+.logo-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #1d4ed8;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(29, 78, 216, 0.1);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.version-badge {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Original styles */
+.upload-header {
+  margin-bottom: 30px;
+}
+
+.upload-header i {
+  font-size: 3.5rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: 25px;
+}
+
+.file-area {
+  position: relative;
+  margin-bottom: 25px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 35px 20px;
+  background: #f8faff;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.file-area:hover, .file-area.dragover {
+  border-color: var(--primary-light);
+  background: #f0f6ff;
+}
+
+.file-area i {
+  font-size: 2.5rem;
+  color: var(--primary-light);
+  margin-bottom: 15px;
+}
+
+.file-area p {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: 15px;
+}
+
+.file-area .browse-text {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+#fileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#fileName {
+  font-size: 0.95rem;
+  margin-top: 15px;
+  color: var(--primary-dark);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, var(--primary), var(--primary-dark));
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(0, 106, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 106, 255, 0.4);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  background: #b0c9ff;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button i {
+  font-size: 1.2rem;
+}
+
+progress {
+  width: 100%;
+  height: 10px;
+  border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 20px;
+  display: none;
+}
+
+progress::-webkit-progress-bar {
+  background: #e6f0ff;
+  border-radius: 5px;
+}
+
+progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary));
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+#msg {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  text-align: center;
+  min-height: 24px;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#msg i {
+  font-size: 1.2rem;
+}
+
+.msg-info {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.msg-success {
+  background: #e8f5e9;
+  color: var(--success);
+}
+
+.msg-error {
+  background: #ffebee;
+  color: var(--error);
+}
+
+.footer {
+  margin-top: 25px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.footer i {
+  color: var(--primary-light);
+}
+
+@media (max-width: 480px) {
+  #card {
+    padding: 30px 20px;
+  }
+  
+  .logo-text {
+    font-size: 1.6rem;
+  }
+  
+  .upload-header i {
+    font-size: 3rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .file-area {
+    padding: 25px 15px;
+  }
+  
+  .version-badge {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div id="card">
+  <!-- Added EchoFind logo header -->
+  <div class="logo-header">
+    <div class="echo-logo">
+      <div class="logo-symbol"></div>
+      <div class="logo-text">EchoFind</div>
+    </div>
+    <div class="version-badge">V.1.0.5</div>
+  </div>
+  
+  <!-- Original upload header -->
+  <div class="upload-header">
+    <i class="fas fa-cloud-upload-alt"></i>
+    <h1>Upload Your Files</h1>
+    <p class="subtitle">fast, and easy file sharing</p>
+  </div>
+  
+  <div class="file-area" id="dropArea">
+    <input id="fileInput" type="file" />
+    <i class="fas fa-file-upload"></i>
+    <p>Drag & drop your files here</p>
+    <p>or <span class="browse-text">browse files</span></p>
+    <div id="fileName"></div>
+  </div>
+  
+  <button id="sendBtn" disabled>
+    <i class="fas fa-paper-plane"></i>
+    <span>Upload File</span>
+  </button>
+  
+  <progress id="bar" value="0" max="100"></progress>
+  
+  <div id="msg"></div>
+  
+  <div class="footer">
+    <div><i class="fas fa-bolt"></i> EchoFind by kheder</div>
+    <div><i class="fas fa-bolt"></i> Fast uploads</div>
+  </div>
+</div>
+
+<script>
+const URL = "http://172.29.5.41:30088/upload";
+
+const fileInput = document.getElementById("fileInput");
+const dropArea = document.getElementById("dropArea");
+const sendBtn = document.getElementById("sendBtn");
+const bar = document.getElementById("bar");
+const msg = document.getElementById("msg");
+const fileName = document.getElementById("fileName");
+
+// Update UI when file is selected
+fileInput.addEventListener("change", () => {
+  if (fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+    fileName.textContent = file.name;
+    sendBtn.disabled = false;
+    msg.className = "msg-info";
+    msg.innerHTML = `<i class="fas fa-info-circle"></i> Ready to upload`;
+  }
+});
+
+// Drag and drop functionality
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+  dropArea.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropArea.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight() {
+  dropArea.classList.add('dragover');
+}
+
+function unhighlight() {
+  dropArea.classList.remove('dragover');
+}
+
+dropArea.addEventListener('drop', handleDrop, false);
+
+function handleDrop(e) {
+  const dt = e.dataTransfer;
+  const files = dt.files;
+  fileInput.files = files;
+  
+  // Trigger change event
+  const event = new Event('change');
+  fileInput.dispatchEvent(event);
+}
+
+// Upload functionality
+sendBtn.addEventListener("click", async () => {
+  const file = fileInput.files[0];
+  if (!file) {
+    msg.className = "msg-error";
+    msg.innerHTML = `<i class="fas fa-exclamation-circle"></i> Please select a file first`;
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  bar.style.display = "block";
+  bar.value = 0;
+  msg.className = "msg-info";
+  msg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Uploading...`;
+  sendBtn.disabled = true;
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", URL);
+
+  xhr.upload.addEventListener("progress", e => {
+    if (e.lengthComputable) {
+      const percent = (e.loaded / e.total) * 100;
+      bar.value = percent;
+      
+      // Update message with percentage
+      msg.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Uploading... ${Math.round(percent)}%`;
+    }
+  });
+
+  xhr.onload = () => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      msg.className = "msg-success";
+      msg.innerHTML = `<i class="fas fa-check-circle"></i> Upload complete!`;
+    } else {
+      msg.className = "msg-error";
+      msg.innerHTML = `<i class="fas fa-times-circle"></i> Upload failed: ${xhr.statusText}`;
+    }
+    bar.style.display = "none";
+    sendBtn.disabled = false;
+  };
+
+  xhr.onerror = () => {
+    msg.className = "msg-error";
+    msg.innerHTML = `<i class="fas fa-times-circle"></i> Network error, upload failed`;
+    bar.style.display = "none";
+    sendBtn.disabled = false;
+  };
+
+  xhr.send(formData);
+});
+</script>
+</body>
+</html>

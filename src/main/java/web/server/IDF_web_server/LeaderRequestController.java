@@ -4,16 +4,21 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.web.util.UriComponentsBuilder;
 import web.server.IDF_web_server.service.SearchLogService;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +63,94 @@ public class LeaderRequestController {
         }
     }
 
+
+    @GetMapping("/download")
+    public ResponseEntity<StreamingResponseBody> proxyDownload(
+            @RequestParam String path) {
+
+        try {
+            /* 1. discover leader */
+            String leaderUrl = new String(
+                    zooKeeper.getData(LEADER_INFO_PATH, false, null));
+
+            String url = UriComponentsBuilder
+                    .fromHttpUrl(leaderUrl + "/leader/download")
+                    .queryParam("path", path)
+                    .build()
+                    .toUriString();
+
+            /* 2. open a streaming GET to the leader */
+            ResponseEntity<Resource> leaderResp =
+                    restTemplate.exchange(
+                            url,
+                            HttpMethod.GET,
+                            null,
+                            Resource.class);
+
+            if (!leaderResp.getStatusCode().is2xxSuccessful()
+                    || leaderResp.getBody() == null) {
+                return ResponseEntity.status(leaderResp.getStatusCode()).build();
+            }
+
+            /* 3. relay the stream to the client without buffering */
+            StreamingResponseBody body = outputStream ->
+                    FileCopyUtils.copy(leaderResp.getBody().getInputStream(),
+                            outputStream);
+
+            HttpHeaders hdr = new HttpHeaders();
+            hdr.putAll(leaderResp.getHeaders());      // copy length, disposition, …
+
+            return new ResponseEntity<>(body, hdr, leaderResp.getStatusCode());
+
+        } catch (KeeperException | InterruptedException e) {
+            return ResponseEntity.status(503)
+                    .body(out -> out.write(("Leader unavailable: " + e).getBytes()));
+        } catch (Exception e) {
+            return ResponseEntity.status(500)
+                    .body(out -> out.write(("Download error: " + e).getBytes()));
+        }
+    }
+
+//---
+
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> proxyUpload(@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) return ResponseEntity.badRequest().body("Empty file");
+        try {
+            // 1. discover leader
+            String leaderUrl = new String(
+                    zooKeeper.getData(LEADER_INFO_PATH, false, null));
+
+            // 2. prepare multipart
+            MultiValueMap<String,Object> body = new LinkedMultiValueMap<>();
+            body.add("file", new ByteArrayResource(file.getBytes()) {
+                @Override public String getFilename() { return file.getOriginalFilename(); }
+            });
+            HttpEntity<MultiValueMap<String,Object>> req =
+                    new HttpEntity<>(body, createMultipartHeaders());
+
+            // 3. forward to leader
+            String url = leaderUrl + "/leader/upload";
+            ResponseEntity<String> resp =
+                    restTemplate.postForEntity(url, req, String.class);
+
+            return ResponseEntity.status(resp.getStatusCode()).body(resp.getBody());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Upload proxy error: " + e.getMessage());
+        }
+    }
+
+    private static HttpHeaders createMultipartHeaders() {
+        HttpHeaders h = new HttpHeaders();
+        h.setContentType(MediaType.MULTIPART_FORM_DATA);
+        return h;
+    }
+
+
+    //--
 
 
 
